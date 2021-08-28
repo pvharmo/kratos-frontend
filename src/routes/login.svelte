@@ -2,16 +2,17 @@
 	import * as api from '../auth'
 	import { onMount } from 'svelte'
 	import Link from '../components/Link.svelte'
-	import FormContainer from 'src/layout/FormContainer.svelte'
+	import Form from 'src/layout/Form.svelte'
+	import { go } from 'src/router'
 
 	let config
 
 	onMount(async () => {
 		try {
 			config = await api.initializeLoginFlow()
-			console.log(config)
 		} catch (e) {
 			console.error(e)
+			window.location.replace('http://drive.local.io')
 		}
 	})
 
@@ -26,36 +27,32 @@
 				values.traits[splitName[splitName.length - 1]] = target.value
 			}
 		}
-		const res = await api.submitLogin(config.id, values)
+		const res = await api.submitLogin(config.ui.action, values)
 		for (let target of event.target) {
 			target.value = ''
 		}
-		await api.fetchUser()
+		window.location.replace('http://drive.local.io')
 	}
 </script>
 
 <div>
-	<FormContainer>
-		{#if config}
-			<form on:submit={submitForm}>
-				{#each config.ui.nodes as { attributes }}
-					<div>
-						<input
-							type={attributes.type}
-							name={attributes.name}
-							value={attributes.value || ''}
-							required={attributes.required}
-							disabled={attributes.disabled}
-						/>
-					</div>
-				{/each}
-			</form>
-		{/if}
-		<div>
-			<Link to="/register">Create an account</Link>
+	<Form title="Sign in" {config} on:submit={submitForm}>
+		<div class="alternate-links">
+			<div>
+				<Link to="/register">Create an account</Link>
+			</div>
+			<div style="flex:1;" />
+			<div>
+				<Link to="/forgot-password">Forgot password</Link>
+			</div>
 		</div>
-		<div>
-			<Link to="/forgot-password">Forgot password</Link>
-		</div>
-	</FormContainer>
+	</Form>
 </div>
+
+<style>
+	.alternate-links {
+		margin-top: 15px;
+		font-size: 0.8em;
+		display: flex;
+	}
+</style>

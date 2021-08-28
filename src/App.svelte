@@ -3,6 +3,7 @@
 	import { location } from './router'
 	import Login from './routes/login.svelte'
 	import Register from './routes/register.svelte'
+	import Logout from './routes/logout.svelte'
 	import Home from './routes/index.svelte'
 
 	$: route = $location
@@ -17,6 +18,8 @@
 		<Login />
 	{:else if route.pathname === '/register'}
 		<Register />
+	{:else if route.pathname === '/logout'}
+		<Logout />
 	{:else}
 		<Home />
 	{/if}

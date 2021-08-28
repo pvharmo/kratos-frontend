@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as api from '../auth'
 	import { onMount } from 'svelte'
-	import FormContainer from 'src/layout/FormContainer.svelte'
+	import Form from 'src/layout/Form.svelte'
 	import Link from '../components/Link.svelte'
 
 	let config: api.FormElements
@@ -37,22 +37,18 @@
 </script>
 
 <div>
-	<FormContainer>
-		{#if config}
-			<form on:submit={submitForm}>
-				{#each config.ui.nodes as { attributes }}
-					<input
-						type={attributes.type}
-						name={attributes.name}
-						value={attributes.value || ''}
-						required={attributes.required}
-						disabled={attributes.disabled}
-					/>
-				{/each}
-			</form>
-		{/if}
-		<div>
-			already have an account? <Link to="/login">signin</Link>
+	<Form title="Create an account" {config} on:submit={submitForm}>
+		<div class="alternate-links">
+			<span>
+				already have an account? <Link to="/login">signin</Link>
+			</span>
 		</div>
-	</FormContainer>
+	</Form>
 </div>
+
+<style>
+	.alternate-links {
+		margin-top: 15px;
+		font-size: 0.8em;
+	}
+</style>

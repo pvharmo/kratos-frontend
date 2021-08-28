@@ -80,6 +80,25 @@ export interface FormElements {
 	ui: {
 		action: string
 		method: string
-		nodes: any[]
+		nodes: {
+			type: string
+			group: string
+			attributes: {
+				name: string
+				type: string
+				value: any
+				disabled: boolean
+				required?: boolean
+			}
+			messages: string[]
+			meta: {
+				label: {
+					id: number
+					text: string
+					type: string
+					context: any
+				}
+			}
+		}[]
 	}
 }
