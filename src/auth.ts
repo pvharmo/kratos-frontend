@@ -41,6 +41,9 @@ export const initializeLoginFlow = async () => {
 			Accept: 'application/json'
 		}
 	})
+	if (res.status >= 400) {
+		throw 'Error while fetching login flow'
+	}
 	return await res.json()
 }
 
